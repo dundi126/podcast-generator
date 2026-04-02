@@ -1,18 +1,15 @@
-FROM ubuntu:latest
+FROM python:3.10-slim
 
-# Install git (only what's needed)
 RUN apt-get update && apt-get install -y git \
     && rm -rf /var/lib/apt/lists/*
 
-# Set working directory
 WORKDIR /app
 
-# Install dependencies (pinned for stability)
 RUN pip install --no-cache-dir PyYAML==6.0.1
 
-# Copy files
-COPY feed.py /usr/bin/feed.py 
-COPY entrypoint.sh /entrypoint.sh
+COPY feed.py .
+COPY entrypoint.sh .
 
-# Run the script
+RUN chmod +x entrypoint.sh
+
 ENTRYPOINT ["./entrypoint.sh"]
